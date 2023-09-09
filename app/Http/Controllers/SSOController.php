@@ -45,8 +45,8 @@ class SSOController extends Controller
 
             if (isset($responseData['access_token'])) {
                 $accessToken = $responseData['access_token']; // Mengambil nilai access_token
-                session()->put('accessToken', $accessToken);
-
+                // session()->put('accessToken', $accessToken);
+                $userId = $this->getProfileSSO($accessToken);
                 // Otentikasi berhasil
                 return redirect()->intended('/home');
             } else {
@@ -56,5 +56,17 @@ class SSOController extends Controller
             // Otentikasi gagal
             return view('auth.sso', ['message' => 'Username atau password yang anda masukkan tidak ditemukan']);
         }
+    }
+
+    public function getProfileSSO($token)
+    {
+        $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . $token
+        ])->get('http://localhost:8080/realms/Peruri/account');
+
+        $responseData = json_decode($response->body(), true);
+
+        return   $responseData['id'];
     }
 }

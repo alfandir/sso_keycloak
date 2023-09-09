@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\SSOController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,3 +26,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/sso', [SSOController::class, 'index'])->name('sso');
 Route::post('/sso/login', [SSOController::class, 'login'])->name('sso/login');
 Route::get('/test', [TestController::class, 'index'])->name('test');
+Route::get('/getProfileSSO/{token}', [SSOController::class, 'getProfileSSO'])->name('getProfileSSO');
+
+Route::get('/sso/input', [UserController::class, 'register']);
